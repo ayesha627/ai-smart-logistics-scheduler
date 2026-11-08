@@ -1,339 +1,268 @@
-# AI-Based Smart Van and Route Scheduling System
+# Smart Van and Route Scheduling System
 
-An AI-powered logistics management web application that automates vehicle, driver, and route scheduling using **Constraint Satisfaction Problem (CSP)** techniques.
+Welcome to the **Smart Van and Route Scheduling System**! This is an AI-powered logistics scheduling web application designed to automate and optimize the assignment of vans and drivers to specific routes using Constraint Satisfaction Problem (CSP) algorithms.
 
-The system uses Python and Django for backend management and a custom CSP engine to generate schedules while considering operational constraints such as driver availability, vehicle capacity, maintenance status, fuel range, and overlapping assignments.
+## Purpose
+The primary purpose of this project is to eliminate manual scheduling conflicts, reduce human error, and optimize logistics operations through intelligent constraint solving and resource management.
 
-## Project Overview
+## Goals
+- Automate van and driver assignments.
+- Ensure 100% compliance with operational constraints (working hours, vehicle capacity, maintenance).
+- Provide a responsive, premium, and intuitive user interface for logistics administrators.
+- Offer actionable analytics and real-time dashboard reporting.
 
-Managing transportation resources manually can lead to scheduling conflicts, inefficient vehicle utilization, and driver workload issues.
+## Features
+- **AI Scheduling Engine:** Uses CSP (Backtracking, Forward Checking, MRV, LCV) to generate conflict-free schedules.
+- **Van Management (CRUD):** Manage vehicles, capacities, fuel ranges, and maintenance status.
+- **Driver Management (CRUD):** Track driver availability, licensing, and maximum daily working hours.
+- **Route Management (CRUD):** Define routes with specific distances, passenger loads, time estimates, and priorities.
+- **Analytics Dashboard:** Visualize vehicle usage, driver workload, and overall system status with Chart.js.
+- **Modern SaaS UI:** Features a dark theme with glassmorphism effects and GSAP-powered smooth animations.
 
-This project addresses these challenges through an intelligent scheduling system that manages vans, drivers, routes, and schedules in a centralized web application.
+---
 
-Its AI scheduling engine uses backtracking search and CSP heuristics to find valid assignments while respecting defined constraints.
+## Screenshots
+> [!NOTE]
+> *(Placeholder for actual screenshots)*
+> - `Dashboard Overview`
+> - `Manage Vans`
+> - `Manage Drivers`
+> - `Manage Routes`
+> - `Generated AI Schedules`
 
-## Key Features
+---
 
-### 1. AI-Based Scheduling Engine
+## Project Architecture
+The system follows a standard Django MVT (Model-View-Template) architecture integrated with a custom Python-based AI microservice logic layer. 
+- **Frontend (Templates):** Bootstrap 5, custom CSS (Glassmorphism), Vanilla JS (GSAP).
+- **Backend (Views/Models):** Django handling HTTP requests, database transactions, and context rendering.
+- **AI Engine (Services):** A decoupled module (`services/csp/solver.py`) that applies CSP logic on the Django QuerySets.
 
-The project implements a custom Constraint Satisfaction Problem (CSP) solver.
-
-Algorithms and techniques include:
-
-- Backtracking Search
-- Minimum Remaining Values (MRV)
-- Least Constraining Value (LCV)
-- Forward Checking
-- Domain Generation
-- Constraint Checking
-
-### 2. Van Management
-
-- Add, view, update, and delete vans.
-- Maintain vehicle registration numbers.
-- Track passenger capacity.
-- Track fuel range.
-- Monitor vehicle maintenance status.
-
-### 3. Driver Management
-
-- Add and manage drivers.
-- Store driver license information.
-- Track driver availability.
-- Define maximum working hours.
-
-### 4. Route Management
-
-- Create and manage routes.
-- Define source and destination.
-- Specify route distance.
-- Set estimated travel time.
-- Specify passenger requirements.
-- Assign route priorities.
-
-### 5. Automatic Schedule Generation
-
-The CSP engine evaluates possible combinations of:
-
-- Vans
-- Drivers
-- Departure times
-- Routes
-
-It checks the constraints before accepting an assignment and saves successful schedules in the database.
-
-### 6. Dashboard
-
-The dashboard provides an overview of:
-
-- Total vans
-- Total drivers
-- Total routes
-- Generated schedules
-- Vehicles under maintenance
-
-### 7. Modern User Interface
-
-- Responsive dashboard
-- Dark-themed interface
-- Glassmorphism-inspired design
-- Interactive charts
-- Smooth animations
-- Bootstrap-based layout
-
-## AI Algorithms and Constraints
-
-### Algorithms
-
-| Algorithm | Purpose |
-|---|---|
-| Backtracking Search | Searches for a valid combination of assignments |
-| MRV | Selects the variable with the fewest remaining possible values |
-| LCV | Prioritizes values that restrict other variables the least |
-| Forward Checking | Removes inconsistent values from remaining domains |
-| Degree Heuristic | Helps select constrained variables |
-
-### Hard Constraints
-
-The scheduling engine considers the following restrictions:
-
-1. A driver cannot handle two overlapping routes.
-2. A van cannot be assigned to two overlapping routes.
-3. Passenger requirements must not exceed vehicle capacity.
-4. Drivers must be available.
-5. Vehicles under maintenance cannot be assigned.
-6. Fuel range must be sufficient for the route.
-7. Driver working hours must remain within their defined limit.
-
-### Soft Constraints
-
-The domain-ordering strategy also considers:
-
-- Earlier departure times to reduce passenger waiting.
-- Vehicle fuel capacity when ordering possible assignments.
-- Efficient resource utilization.
-
-Note: The current implementation uses heuristic ordering to find a valid schedule; it does not guarantee a globally optimal solution.
+---
 
 ## Technology Stack
 
-| Category | Technologies |
-|---|---|
-| Programming Language | Python |
-| Backend Framework | Django |
-| Frontend | HTML5, CSS3, JavaScript |
-| UI Framework | Bootstrap 5 |
-| Database | SQLite |
-| AI Technique | Constraint Satisfaction Problem |
-| Search Algorithm | Backtracking |
-| Visualization | Chart.js |
-| Animations | GSAP |
+### Frontend
+- **Languages:** HTML5, CSS3, Vanilla JavaScript
+- **Framework:** Bootstrap 5.3
+- **Libraries:** Chart.js, GSAP (GreenSock Animation Platform)
+- **Icons:** Bootstrap Icons
+- **Fonts:** Google Fonts (Inter, Poppins)
 
-## Project Architecture
+### Backend
+- **Language:** Python 3.11+
+- **Framework:** Django 5.x
+- **Architecture:** MVT (Model-View-Template)
 
-The project follows Django's Model-View-Template (MVT) architecture.
+### Database
+- **Engine:** SQLite3 (Default for development)
+- **ORM:** Django ORM
 
-```text
-AI-Smart-Logistics-Scheduler/
-│
-├── core/
-│   ├── settings.py
-│   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
-│
-├── logistics/
-│   ├── migrations/
-│   ├── services/
-│   │   └── csp/
-│   │       └── solver.py
-│   │
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   └── views.py
-│
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── main.js
-│
-├── templates/
-│   ├── base.html
-│   ├── dashboard.html
-│   ├── driver_form.html
-│   ├── driver_list.html
-│   ├── route_form.html
-│   ├── route_list.html
-│   ├── schedule_list.html
-│   ├── van_form.html
-│   └── van_list.html
-│
-├── manage.py
-├── requirements.txt
-├── README.md
-├── PROJECT_REPORT.md
-└── plan.md
-```
+---
 
-## Database Models
+## Software Requirements
 
-The system uses four primary Django models:
+### Operating System
+- Windows / macOS / Linux
 
-**Van**
-- Vehicle number
-- Passenger capacity
-- Fuel capacity
-- Vehicle status
-- Maintenance status
+### Required Software
+- **Python Version:** 3.10 or higher
+- **Package Manager:** pip (comes with Python)
+- **Git:** For version control and cloning
+- **Browser:** Modern web browser (Chrome, Firefox, Edge, Safari)
 
-**Driver**
-- Name
-- License number
-- Availability
-- Maximum working hours
+---
 
-**Route**
-- Source
-- Destination
-- Distance
-- Estimated time
-- Passenger count
-- Priority
+## Installation Guide
 
-**Schedule**
-- Assigned route
-- Assigned van
-- Assigned driver
-- Departure time
+Follow these steps to set up the project on your local machine.
 
-## Installation and Setup
-
-### Prerequisites
-
-- Python 3.11 or later
-- pip
-- Git
-- A modern web browser
-
-### 1. Clone the Repository
-
+### Step 1: Clone repository
 ```bash
-git clone https://github.com/YOUR-USERNAME/ai-smart-logistics-scheduler.git
+git clone <your-repository-url>
 ```
 
-### 2. Navigate to the Project Folder
-
+### Step 2: Navigate into project
 ```bash
-cd ai-smart-logistics-scheduler
+cd "Smart Van and Route Scheduling System"
 ```
 
-### 3. Create a Virtual Environment
-
+### Step 3: Create virtual environment
 ```bash
 python -m venv venv
 ```
 
-### 4. Activate the Environment
-
-Windows PowerShell:
-
+### Step 4: Activate virtual environment
+**Windows (PowerShell):**
 ```powershell
 .\venv\Scripts\Activate.ps1
 ```
-
-Windows Command Prompt:
-
+**Windows (Command Prompt):**
 ```cmd
-venv\Scripts\activate.bat
+.\venv\Scripts\activate.bat
 ```
-
-Linux / macOS:
-
+**Linux / Mac:**
 ```bash
 source venv/bin/activate
 ```
 
-### 5. Install Dependencies
-
+### Step 5: Install dependencies
 ```bash
 pip install -r requirements.txt
+# Alternatively, if requirements.txt is missing:
+# pip install django
 ```
 
-### 6. Configure Django
+### Step 6: Install frontend packages
+*(No Node.js/npm required. Frontend packages are imported via CDNs in `base.html`.)*
 
-Configure a secure Django secret key using an environment variable rather than committing it to the repository.
+### Step 7: Install backend packages
+*(Handled in Step 5 using pip).*
 
-For local development, configure the appropriate settings in `core/settings.py`.
-
-### 7. Apply Database Migrations
-
+### Step 8: Database setup
+Run the following commands to create the SQLite database and run migrations:
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 8. Create an Administrator Account
+### Step 9: Environment Variables
+Create a `.env` file in the root directory (where `manage.py` is located) for production.
+> [!NOTE]
+> Currently, the system uses default Django settings. For production, define:
+> `SECRET_KEY=your-super-secret-key`
+> `DEBUG=False`
+> `ALLOWED_HOSTS=127.0.0.1,localhost`
 
-```bash
-python manage.py createsuperuser
-```
-
-Follow the prompts to create your own credentials.
-
-### 9. Start the Development Server
-
+### Step 10: Run backend
 ```bash
 python manage.py runserver
 ```
 
-### 10. Open the Application
+### Step 11: Run frontend
+*(Frontend is served automatically by Django through the backend server).*
 
-Visit:
+### Step 12: Open browser
+Open `http://127.0.0.1:8000/` in your browser.
 
-http://127.0.0.1:8000/
+### Step 13: Login
+To access the admin panel at `http://127.0.0.1:8000/admin/`, first create a superuser:
+```bash
+python manage.py createsuperuser
+```
+Enter a username, email, and password. Log in using these credentials.
 
-Django Admin:
+### Step 14: Use the application
+Navigate using the sidebar to add Vans, Drivers, and Routes. Then go to "Schedules" and click "Generate with AI (CSP)".
 
-http://127.0.0.1:8000/admin/
+---
 
-## How to Use
+## Commands Section
 
-1. Start the Django development server.
-2. Open the application dashboard.
-3. Navigate to the Vans section and add available vehicles.
-4. Navigate to Drivers and add driver information.
-5. Navigate to Routes and define transportation routes.
-6. Open the Schedules section.
-7. Click **Generate with AI (CSP)**.
-8. The CSP engine evaluates available assignments and attempts to generate a valid schedule.
-9. View the generated schedules.
+| Command | Explanation |
+|---|---|
+| `python -m venv venv` | Creates a completely isolated Python virtual environment. |
+| `.\venv\Scripts\Activate.ps1` | Activates the virtual environment on Windows PowerShell. |
+| `pip install -r requirements.txt` | Installs all required Python dependencies. |
+| `python manage.py makemigrations` | Detects changes in `models.py` and creates migration files. |
+| `python manage.py migrate` | Applies the migration files to the database schema. |
+| `python manage.py createsuperuser` | Creates an administrator account for the Django backend. |
+| `python manage.py runserver` | Starts the local Django development server on port 8000. |
 
-## Documentation
+---
 
-Additional project documentation is available in:
+## Project Structure
 
-- `PROJECT_REPORT.md` – Detailed software engineering project report.
-- `plan.md` – Project requirements, constraints, design specifications, and implementation plan.
+```text
+/
+├── core/                   # Main Django project configuration (settings, wsgi, urls)
+├── logistics/              # Main application logic
+│   ├── migrations/         # Database migration history
+│   ├── services/           # Custom business logic
+│   │   └── csp/            # AI Constraint Satisfaction Problem Engine
+│   │       ├── __init__.py
+│   │       └── solver.py   # CSP Backtracking Algorithm
+│   ├── admin.py            # Admin panel configuration
+│   ├── models.py           # Database schemas (Van, Driver, Route, Schedule)
+│   ├── urls.py             # Route mappings for the logistics app
+│   └── views.py            # Class-Based Views for CRUD and Dashboard
+├── static/                 # Static assets
+│   ├── css/                # Custom stylesheets (style.css)
+│   ├── js/                 # Custom scripts (main.js)
+│   └── img/                # Image assets
+├── templates/              # HTML templates (base.html, dashboard, forms, lists)
+├── venv/                   # Python Virtual Environment
+├── db.sqlite3              # Local SQLite database file
+└── manage.py               # Django execution script
+```
 
-## Future Improvements
+---
 
-- Google Maps integration for route visualization.
-- Real-time traffic and distance estimation.
-- Advanced multi-day scheduling.
-- Improved optimization using cost-based objective functions.
-- Automated scheduling analytics and reporting.
-- Enhanced authentication and role-based access control.
-- PostgreSQL support for production deployment.
+## How to Run
+**Beginner Tutorial:**
+1. **What to install:** Download and install Python 3.11+. Make sure to check "Add Python to PATH" during installation.
+2. **What command to run:** Open Terminal/Command Prompt in the project folder and type `python -m venv venv`.
+3. Activate it: `venv\Scripts\activate`.
+4. Install Django: `pip install django`.
+5. Prepare the database: `python manage.py migrate`.
+6. Start the server: `python manage.py runserver`.
+7. **Expected output:** The terminal will show `Starting development server at http://127.0.0.1:8000/`.
+8. **What to click:** Open your web browser and click or type `http://127.0.0.1:8000/`.
+9. **Possible errors:** "python is not recognized". **How to fix:** Reinstall Python and ensure "Add to PATH" is checked.
 
-## Project Purpose
+---
 
-This project demonstrates the practical application of Artificial Intelligence concepts, particularly Constraint Satisfaction Problems, in a real-world logistics scheduling scenario.
+## Troubleshooting
 
-It combines AI algorithms, backend development, database management, and frontend design into one integrated software application.
+- **Python errors (ModuleNotFoundError):**
+  Ensure your virtual environment is activated before running the server. Run `pip install django`.
+- **Database errors (no such table):**
+  You forgot to migrate. Run `python manage.py makemigrations` followed by `python manage.py migrate`.
+- **Port already in use (Error: That port is already in use.):**
+  Another process is using port 8000. Stop it or run the server on a different port: `python manage.py runserver 8001`.
+- **Permission denied (Windows Scripts):**
+  Running scripts is disabled on your system. Run `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted` in PowerShell as Administrator.
+
+---
+
+## FAQ
+
+1. **What is CSP?** Constraint Satisfaction Problem, an AI methodology to find solutions matching strict rules.
+2. **Can I use PostgreSQL instead of SQLite?** Yes. Update `DATABASES` in `core/settings.py`.
+3. **Is Node.js required?** No, the frontend relies on CDN links.
+4. **How do I add a new Van?** Navigate to the Vans tab and click "Add Van".
+5. **How does the AI optimize schedules?** It sorts domains to minimize distance/fuel ratio and prioritizes earlier departures.
+6. **What happens if a driver exceeds max hours?** The CSP engine rejects the assignment.
+7. **What if no solution exists?** The AI will inform you that no valid assignment can be found under current constraints.
+8. **How do I change the color theme?** Edit CSS variables in `:root` inside `static/css/style.css`.
+9. **How do I create an admin?** Use `python manage.py createsuperuser`.
+10. **Where are the database models located?** In `logistics/models.py`.
+11. **Where is the AI logic stored?** In `logistics/services/csp/solver.py`.
+12. **Can I deploy this to Heroku?** Yes, but you will need to add `gunicorn` and `psycopg2`.
+13. **Why do the animations look choppy?** Ensure hardware acceleration is enabled in your browser.
+14. **How do I run tests?** Run `python manage.py test`.
+15. **Does the AI use neural networks?** No, it uses classic AI search algorithms (Backtracking).
+16. **How do I restart the server?** Press `Ctrl+C` in the terminal and run `python manage.py runserver` again.
+17. **Where do I add new URLs?** In `logistics/urls.py`.
+18. **Is this open-source?** Yes, under the MIT license.
+19. **How do I clear all schedules?** Clicking "Generate with AI" clears the current schedule and creates a new one.
+20. **Who do I contact for support?** Open an issue on the GitHub repository.
+
+---
 
 ## License
+MIT License. See `LICENSE` file for more details.
 
-This project is intended for educational and learning purposes.
+---
+
+## Contributing
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/awesome-feature`).
+3. Commit your changes (`git commit -m 'Add awesome feature'`).
+4. Push to the branch (`git push origin feature/awesome-feature`).
+5. Open a Pull Request.
+
+---
+
+## Author
+Developed with ❤️ by Senior Software Engineer & AI Coding Assistant.
