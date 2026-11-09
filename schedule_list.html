@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header_title %}Schedules{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0 text-white">Generated Schedules</h4>
+    
+    <form method="post" action="{% url 'schedule_generate' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-magic me-2"></i>Generate with AI (CSP)
+        </button>
+    </form>
+</div>
+
+<div class="glass-card p-4">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover mb-0 align-middle" style="background: transparent;">
+            <thead>
+                <tr>
+                    <th>Route</th>
+                    <th>Departure Time</th>
+                    <th>Assigned Van</th>
+                    <th>Assigned Driver</th>
+                    <th>Est. Duration (hrs)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for schedule in schedules %}
+                <tr>
+                    <td class="fw-bold">{{ schedule.route.source }} &rarr; {{ schedule.route.destination }}</td>
+                    <td>{{ schedule.departure_time|date:"M d, Y h:i A" }}</td>
+                    <td>
+                        <i class="bi bi-truck-front text-accent me-2"></i>{{ schedule.van.vehicle_number }}
+                    </td>
+                    <td>
+                        <i class="bi bi-person text-secondary me-2"></i>{{ schedule.driver.name }}
+                    </td>
+                    <td>{{ schedule.route.estimated_time }}</td>
+                    <td>
+                        <span class="badge bg-success">Scheduled</span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">
+                        <i class="bi bi-calendar-x fs-1 d-block mb-3"></i>
+                        No schedules have been generated yet.<br>
+                        Click "Generate with AI" to let the CSP engine assign vans and drivers to your routes.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

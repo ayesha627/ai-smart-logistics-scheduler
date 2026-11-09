@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block header_title %}Routes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0 text-white">Manage Routes</h4>
+    <a href="{% url 'route_create' %}" class="btn btn-primary"><i class="bi bi-geo-alt me-2"></i>Add Route</a>
+</div>
+
+<div class="glass-card p-4">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover mb-0 align-middle" style="background: transparent;">
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Distance (km)</th>
+                    <th>Est. Time (hrs)</th>
+                    <th>Passengers</th>
+                    <th>Priority</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for route in routes %}
+                <tr>
+                    <td class="fw-bold">{{ route.source }}</td>
+                    <td class="fw-bold">{{ route.destination }}</td>
+                    <td>{{ route.distance }}</td>
+                    <td>{{ route.estimated_time }}</td>
+                    <td><i class="bi bi-people-fill text-muted me-2"></i>{{ route.passengers }}</td>
+                    <td>
+                        {% if route.priority == 3 %}
+                            <span class="badge bg-danger">High</span>
+                        {% elif route.priority == 2 %}
+                            <span class="badge bg-warning">Medium</span>
+                        {% else %}
+                            <span class="badge bg-info">Low</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'route_update' route.pk %}" class="btn btn-sm btn-outline-info"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'route_delete' route.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted">No routes found. Add a route to get started.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

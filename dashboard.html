@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block header_title %}Overview Dashboard{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+    <!-- Stat Cards -->
+    <div class="col-md-4 col-lg-2 col-6">
+        <div class="glass-card p-3 text-center h-100 d-flex flex-column justify-content-center">
+            <h6 class="text-muted mb-2">Total Vans</h6>
+            <h2 class="text-dark mb-0">{{ total_vans }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2 col-6">
+        <div class="glass-card p-3 text-center h-100 d-flex flex-column justify-content-center">
+            <h6 class="text-muted mb-2">Drivers</h6>
+            <h2 class="text-dark mb-0">{{ total_drivers }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2 col-6">
+        <div class="glass-card p-3 text-center h-100 d-flex flex-column justify-content-center">
+            <h6 class="text-muted mb-2">Routes</h6>
+            <h2 class="text-dark mb-0">{{ total_routes }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2 col-6">
+        <div class="glass-card p-3 text-center h-100 d-flex flex-column justify-content-center">
+            <h6 class="text-muted mb-2">Schedules</h6>
+            <h2 class="text-dark mb-0">{{ total_schedules }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-4 col-12">
+        <div class="glass-card p-3 text-center h-100 d-flex flex-column justify-content-center border-warning border-opacity-50">
+            <h6 class="text-warning mb-2">Maintenance Alerts</h6>
+            <h2 class="text-dark mb-0">{{ vans_in_maintenance }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="glass-card p-4 h-100">
+            <h5 class="mb-4">Vehicle Usage Overview</h5>
+            <canvas id="usageChart" height="100"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="glass-card p-4 h-100">
+            <h5 class="mb-4">Recent Schedules</h5>
+            <div class="text-muted text-center py-5">
+                <i class="bi bi-calendar-x fs-1 d-block mb-3"></i>
+                <p>Generate schedules using the AI CSP engine.</p>
+                <form method="post" action="{% url 'schedule_generate' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary btn-sm mt-2">Generate Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('usageChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Active Vans',
+                data: [12, 19, 15, 17, 14, 10, 8],
+                backgroundColor: 'rgba(17, 17, 17, 0.7)',
+                borderColor: 'rgba(17, 17, 17, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Routes Completed',
+                data: [18, 25, 20, 22, 19, 15, 12],
+                backgroundColor: 'rgba(120, 120, 120, 0.7)',
+                borderColor: 'rgba(120, 120, 120, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(17, 17, 17, 0.08)' },
+                    ticks: { color: '#111111' }
+                },
+                x: {
+                    grid: { color: 'rgba(17, 17, 17, 0.08)' },
+                    ticks: { color: '#111111' }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#111111' } }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
